@@ -1,4 +1,5 @@
 from IPython.display import display, JSON
+import sys
 
 def install_kernel_plugin():
     numeric_types = [int, float]
@@ -9,14 +10,12 @@ def install_kernel_plugin():
         pass
     numeric_types = tuple(numeric_types)
 
-    # TODO(nikita): test if 'numpy' in sys.modules, to avoid introducing numpy
-    # import when the kernel doesn't need it
-    try:
+    if 'numpy' is sys.modules:
         import numpy as np
         def isarray(obj):
             return isinstance(obj, np.ndarray)
         isscalar = np.isscalar
-    except:
+    else:
         def isarray(obj):
             return False
         def isscalar(obj):
