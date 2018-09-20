@@ -70,6 +70,7 @@ def install_kernel_plugin():
                     entry_value = str(val).lstrip('(').rstrip(')')
                 elif isinstance(val, (list, set, dict, tuple)):
                     entry_size = len(val)
+                    entry_value = str(val)
                 elif isinstance(val, str):
                     entry_size = len(val)
                     if entry_size < 20:
@@ -82,6 +83,7 @@ def install_kernel_plugin():
                     try:
                         vbytes = val.size * val.itemsize
                         entry_value = "Bytes: {}".format(str(vbytes))
+                        entry_value = str(val)
                         if vbytes < 100000:
                             pass
                         elif vbytes < Mb:
@@ -94,6 +96,8 @@ def install_kernel_plugin():
                     entry_size = val.shape
                     entry_type = 'DataFrame'
                     entry_value = 'Column Names: ' + ', '.join([c for c in val.columns])
+                elif str(type(val)) == "<class 'module'>":
+                    entry_value = str(val)
                 elif isscalar(val):
                     entry_value = str(val)
 
