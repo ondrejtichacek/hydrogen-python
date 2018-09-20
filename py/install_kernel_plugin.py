@@ -21,6 +21,14 @@ def install_kernel_plugin():
         def isscalar(obj):
             return False
 
+    if 'pandas' in sys.modules:
+        import pandas as pd
+        def isDataFrame(obj):
+            return isinstance(obj, pd.core.frame.DataFrame)
+    else:
+        def isDataFrame(obj):
+            return False
+
     class HydrogenPythonPlugin:
         def __init__(self):
             self.shell = get_ipython()
@@ -82,6 +90,10 @@ def install_kernel_plugin():
                             entry_value += " ({} Mb)".format(vbytes/Mb)
                     except:
                         pass
+                elif isDataFrame(val):
+                    entry_size = val.shape
+                    entry_type = 'DataFrame'
+                    entry_value = 'Column Names: ' + ', '.join([c for c in val.columns])
                 elif isscalar(val):
                     entry_value = str(val)
 
